@@ -34,26 +34,33 @@ async function getAutComByPost(){
     return fullPost
 }
 
+function toggleComments(postId) {
+    console.log(postId)
+    x=document.getElementById(postId)
+    x.classList.toggle('anim')
+}
+
 async function affichePost(post){
-        const tr = template.content.cloneNode(true); // Clonage du template dans tr
-        const content = tr.querySelector('.post-content'); // Cible la classe post-content du template
-        const auteur = tr.querySelector('.auteur'); // Cible la classe auteur du template
-        const titre = tr.querySelector('h2'); // Cible la balise h2 du template
-        const nbcomments = tr.querySelector('.post-comment-nb'); // Cible la classe post-comment-nb du template
-        const img = tr.querySelector('.avatar'); // Cible la classe avatar du template (sera une image)
-        const aff = tr.querySelector('.comment')
+    const tr = template.content.cloneNode(true); // Clonage du template dans tr
+    tr.querySelector('.post').id = `post-${post.id}` 
+    tr.querySelector('.post-content').textContent = post.body; ; // Cible la classe post-content du template
+    tr.querySelector('.auteur').textContent = post.author.name;; // Cible la classe auteur du template
+    tr.querySelector('h2').textContent= post.title;; // Cible la balise h2 du template
+    tr.querySelector('.post-comment-nb').textContent = `${post.comments.length} commentaire`;; // Cible la classe post-comment-nb du template
+    tr.querySelector('.avatar').src = `https://ui-avatars.com/api/?name=${post.author.name}&background=random`; // Cible la classe avatar du template (sera une image)
+    const aff = tr.querySelector('.comment')
 
-        post.comments.forEach(element => { //Je parcours chaque commentaire dur post
-            aff.innerHTML += `<div class='post'><h2>${element.name}</h2><p>${element.body}</p><div>` //J'ajoute le titre et contenu du commentaire dans le HTML
-            
-        });
+    tr.querySelector('.post').addEventListener('click',function() {
+        toggleComments(`post-${post.id}`)
+    })
 
-        img.src = `https://ui-avatars.com/api/?name=${post.author.name}&background=random`; // Je change la source de l'image avec en 'paramètre' le nom fr l'autheur;
-        content.textContent = post.body; // Je met le body du poste dans la classe post-content du template
-        auteur.textContent = post.author.name; // Je met le nom de l'autheur du poste dans classe auteur du template
-        nbcomments.textContent = `${post.comments.length} commentaire`; // Je met le nombre de commentaire du poste dans la classe post-comment-nb du template
-        titre.textContent= post.title; //Je met le titre du poste dans la balise h2 du template
-        container.append(tr); // J'envoie la copie du template dans le container de poste
+    post.comments.forEach(element => { //Je parcours chaque commentaire dur post
+        aff.innerHTML += `<div><h2>${element.name}</h2><p>${element.body}</p><div>` //J'ajoute le titre et contenu du commentaire dans le HTML
+        
+    });
+    
+//Je met le titre du poste dans la balise h2 du template
+    container.append(tr); // J'envoie la copie du template dans le container de poste
 }
 
 
@@ -61,6 +68,9 @@ async function main() {
     const post = await getAutComByPost();
     for(let i = 0;i<post.length;i++) { // Boucle qui va passer sur chaque poste (Le poste de chaque itération sera appelé poste i)
         affichePost(post[i]) //J'affiche le poste i grâce à la function afficherPost
+        const lol = document.getElementsByClassName('post')
+        lol[i].style.top = `${Math.floor(Math.random()*1080)}px`
+        lol[i].style.left = `${Math.floor(Math.random()*1920)}px`
     }
 }
 

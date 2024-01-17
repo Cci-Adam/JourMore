@@ -25,6 +25,7 @@ header {
     padding: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+    position: absolute;
 }
 
 .post:hover {
@@ -66,10 +67,23 @@ h2 {
     line-height: 25px;
 }
 
-.comment {
-    display: none;
+
+
+@keyframes example {
+    0%   {transform: rotate(0deg);}
+    25%  {transform: rotate(90deg);}
+    50%  {transform: rotate(180deg);}
+    75%  {transform: rotate(270deg);}
+    100%  {transform: rotate(360deg);}
 }
 
-.post:hover .comment {
-    display: block;
+.anim {
+    animation-name: example;
+    animation-duration: 5s;
+    animation-iteration-count: 200;
+    animation-timing-function: linear;
+}
+
+.hide {
+    display: none;
 }
